@@ -137,7 +137,9 @@ const AdminDashboard = ({ user, onViewChange }) => {
 
   const loadDocuments = async () => {
     try {
-      const result = await fetchAllDocuments(100, true);
+      // Reuse the same shared document cache as the homepage to avoid re-reading
+      // the entire nested Firestore hierarchy on every dashboard load.
+      const result = await fetchAllDocuments(100, false);
       if (result.success && result.data) {
         const allDocs = result.data.map(doc => ({
           ...doc,
